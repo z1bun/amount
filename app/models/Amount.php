@@ -26,7 +26,7 @@ class Amount
     private $oldPrice;
 
     /** @var float Результат расчета в % */
-    private $result;
+    private $result = 0;
 
     /**
      * Конструктор класса
@@ -34,14 +34,12 @@ class Amount
      * @param int $tolerance - допустимое отклонение в %
      * @param int $currentPrice - текущая цена
      * @param int $oldPrice - предыдущая цена
-     * @param float $result - результат в %
      */
-    public function __construct(int $tolerance, int $currentPrice, int $oldPrice = 0, float $result = 0)
+    public function __construct(int $tolerance, int $currentPrice, int $oldPrice = 0)
     {
         $this->tolerance = $tolerance;
         $this->currentPrice = $currentPrice;
         $this->oldPrice = $oldPrice;
-        $this->result = $result;
     }
 
     /**
@@ -52,7 +50,7 @@ class Amount
      */
     public function diff(): bool
     {
-        if ($this->oldPrice !== 0) {
+        if (0 !== $this->oldPrice) {
             $diff = ((float)$this->currentPrice / (float)$this->oldPrice - 1) * 100;
             $this->result = $diff;
 
@@ -69,7 +67,6 @@ class Amount
      */
     public function getAmount(): int
     {
-        /** на случай, если число слишком большое, округляем его */
         return round($this->result, 2);
     }
 
